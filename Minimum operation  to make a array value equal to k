@@ -1,0 +1,19 @@
+import java.util.*;
+
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        // Step 1: Traitor check
+        for (int chakra : nums) {
+            if (chakra < k) return -1; // Mission failed
+        }
+
+        // Step 2: Collect unique chakra levels > k
+        Set<Integer> aboveK = new HashSet<>();
+        for (int chakra : nums) {
+            if (chakra > k) aboveK.add(chakra);
+        }
+
+        // Step 3: Return number of reductions needed
+        return aboveK.size(); // 1 per unique level above k
+    }
+}
