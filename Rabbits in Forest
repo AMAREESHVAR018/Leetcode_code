@@ -1,0 +1,17 @@
+class Solution {
+  public int numRabbits(int[] answers) {
+    int res = 0;
+    int[] count = new int[1000]; //due to the constraint
+    for (int num : answers) {
+      if (count[num] != 0) { // this mean there's other rabbit's answer same as current rabbit
+        count[num]--;
+      } else if (num == 0) { // there's no rabbit same color with current rabbit
+        res++;
+      } else {
+        count[num] = num;
+        res += num + 1;
+      }
+    }
+    return res;
+  }
+}
