@@ -1,0 +1,36 @@
+class Solution 
+{
+    //a,  a+diff[0],  a+diff[0]+diff[1]  and so on......
+    //assume a=0
+    public int numberOfArrays(int[] diff, int lower, int upper) 
+    {
+        long prev=0;
+        
+        //min-->min number in series
+        long min=0; 
+        
+        
+        //max--->max number in series
+        long max=0;
+        
+        for(int i=0;i<diff.length;i++)
+        {
+            //curr number=prev number + diff[i]
+            long curr=diff[i]+prev;
+            prev=curr;
+            
+            min=Math.min(min,curr);
+            max=Math.max(max,curr);
+        }
+        
+        //op1 tells a's lower bound
+        long op1=lower-min;
+        
+        //op2 tells a's upper bound
+        long op2=upper-max;
+        
+        //upper bound- lower bound +1 =ans (if>0)
+        
+        return op2-op1+1>0?(int)(op2-op1+1):0;
+    }
+}
