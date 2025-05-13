@@ -1,0 +1,30 @@
+class Solution {
+    int mod = 1000000007;
+
+    public int lengthAfterTransformations(String s, int t) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']++;
+        }
+        int ans = s.length();
+
+        while (t > 0) {
+            ans = ((ans%mod) + cnt[25])%mod;
+
+            int pre = cnt[25];
+            for (int i = 0; i < 26; i++) {
+                int te = cnt[i];
+                cnt[i] = 0;
+                cnt[i] =(cnt[i]+ pre)%mod;
+                if (i == 1) {
+                    cnt[i] = (cnt[i]+cnt[25])%mod;
+                }
+              
+                pre = te;
+            }
+
+            t--;
+        }
+        return ans;
+    }
+}
