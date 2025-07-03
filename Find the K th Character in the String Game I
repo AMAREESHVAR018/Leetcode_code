@@ -1,0 +1,23 @@
+class Solution {
+    public char kthCharacter(int k) {
+        int res = 0;
+        int shift;
+
+        while (k != 1) {
+            shift = 31 - leadingZero(k);
+            if (Math.pow(2, shift) == k) {
+                shift--;
+            }
+            k -= (int)Math.pow(2, shift);
+            res++;
+        }
+
+        return (char) ('a' + res);
+    }
+
+    int leadingZero(int val) {
+        String bin = Integer.toBinaryString(val);
+        return 32 - bin.length();
+    }
+}
+
