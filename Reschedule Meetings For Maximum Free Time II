@@ -1,0 +1,43 @@
+class Solution {
+    public int maxFreeTime(int eventTime, int[] startTime, int[] endTime) {
+        int start = 0;
+        List<FreeSpace> freeSpacesList = new ArrayList<>();
+        TreeSet<FreeSpace> freeSpaces = new TreeSet<>((p1, p2) -> {
+            if (p1.size == p2.size) {
+                return Integer.compare(p1.start, p2.start);
+            }
+            return Integer.compare(p2.size, p1.size);
+        });
+
+        for (int i = 0; i <= startTime.length; i++) {
+            int bound = (i == startTime.length) ? eventTime : startTime[i];
+            FreeSpace space = new FreeSpace(bound - start, start);
+            freeSpacesList.add(space);
+            freeSpaces.add(space);
+            if (i != startTime.length) {
+                start = endTime[i];
+            }
+        }
+
+        int ans = 0;
+        for (int i = 0; i < startTime.length; i++) {
+            FreeSpace left = freeSpacesList.get(i);
+            FreeSpace right = freeSpacesList.get(i + 1);
+            freeSpaces.remove(left);
+            freeSpaces.remove(right);
+            int intervalLen = endTime[i] - startTime[i];
+            FreeSpace candidate = freeSpaces.floor(new FreeSpace(intervalLen, Integer.MAX_VALUE));
+            ans = Math.max(
+                ans,
+                left.size + right.size +
+                    (candidate != null && candidate.size >= intervalLen ? intervalLen : 0)
+            );
+            freeSpaces.add(left);
+            freeSpaces.add(right);
+        }
+
+        return ans;
+    }
+
+    record FreeSpace(int size, int start) {}
+}
