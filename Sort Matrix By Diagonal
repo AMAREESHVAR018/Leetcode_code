@@ -1,0 +1,54 @@
+class Solution {
+    public int[][] sortMatrix(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        // Step 1: Use HashMap to group elements by their diagonal (i - j is constant on each diagonal)
+        Map<Integer, List<Integer>> diagonalMap = new HashMap<>();
+        
+        // Fill the map with diagonals  (start from bottom-right to top-left)
+        for (int row = rows-1; row >=0; row--) {
+            for (int col = cols-1; col >=0; col--) {
+                int diagKey = row - col; // Unique identifier for each diagonal
+
+                diagonalMap.putIfAbsent(diagKey, new ArrayList<>());
+                diagonalMap.get(diagKey).add(grid[row][col]);
+            }
+        }
+
+         // Step 2: Sort each diagonal list
+        // - Diagonals with key >= 0 → sort in descending order
+        // - Diagonals with key < 0 → sort in ascending order
+       
+        for (Map.Entry<Integer, List<Integer>> entry : diagonalMap.entrySet()) {
+
+            int diagKey = entry.getKey();
+            List<Integer> values = entry.getValue();
+
+            if(diagKey>=0){
+            // Sort descending
+            // Collections.sort(values, Collections.reverseOrder());
+               values.sort(Collections.reverseOrder());
+            }
+            else{
+                  // Sort ascending
+                   Collections.sort(values);
+            }
+        }
+
+        // Step 3: Put them back in sorted order
+        // Refill the grid with sorted values
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                int diagKey = row - col;
+                List<Integer> values = diagonalMap.get(diagKey);
+
+                // Always remove from the front since we stored in order
+                grid[row][col] = values.remove(0); // remove from start
+            }
+        }
+
+        return grid;
+        
+    }
+}
