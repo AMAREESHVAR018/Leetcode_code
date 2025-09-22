@@ -1,0 +1,71 @@
+/*class Solution {
+    public int maxFrequencyElements(int[] nums) {
+        HashMap<Integer,Integer> fc=new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            int num=nums[i];
+            int count=fc.getOrDefault(num,0);
+            fc.put(num,count+1);
+            if(count<=1)
+            {
+                return nums.length;
+            }
+            else 
+            {
+                int maxfreq=0;
+                maxfreq=maxfreq+count;
+                System.out.print(maxfreq);
+                System.out.print(count);
+                return maxfreq-2;
+            }
+        }
+      //  System.out.print(fc);
+        return 0;
+    }
+    
+}*/
+
+
+/*class Solution 
+{
+    public int maxFrequencyElements(int[] nums) 
+    {
+        HashSet<Integer> hs=new HashSet<>();
+        int k=0;
+        int ar[]=new int[nums.length];
+        for(int i=0;i<nums.length;i++)
+        {
+            
+        }
+        return hs.size();
+    }
+}*/
+
+class Solution {
+    public int maxFrequencyElements(int[] nums) {
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+        }
+        int max=Integer.MIN_VALUE;
+        int c=0;
+        for(int i=0;i<nums.length;i++){
+            max=Math.max(max,map.get(nums[i]));
+        }
+        for(int i=0;i<nums.length;i++){
+            if(map.containsKey(nums[i])){
+            if(max==map.get(nums[i])){
+                c++;
+            }
+            map.remove(nums[i]);
+            }
+        }
+        int sum=0;
+        while(c-- >0){
+            sum+=max;
+        }
+        return sum;
+    }
+    
+}
