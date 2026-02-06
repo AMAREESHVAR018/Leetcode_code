@@ -1,0 +1,49 @@
+class Solution {
+    // binary search to find the index of the first element strictly greater than `target`
+    // also called upper bound
+    private int upperBound(int[] a, long maxVal) {
+        int s = 0, e = a.length - 1;
+        while (s <= e) {
+            int mid = s + (e - s) / 2;
+            if (maxVal >= a[mid]) { // if current value is less than or equal to target, move right
+                s = mid + 1;
+            } else {               // else, move left
+                e = mid - 1;
+            }
+        }
+        // `s` is the first index where a[s] > target (or a.length if all values are <= target)
+        return s;
+    }
+
+    public int minRemoval(int[] nums, int k) {
+        int n = nums.length;
+        
+        // sort the array to apply binary search
+        Arrays.sort(nums);
+
+        // if the whole array is already balanced, no need to remove any elements
+        if (nums[n - 1] <= nums[0] * k) {
+            return 0;
+        }
+
+        int minRemovals = (int) 1e9;
+
+        // treat every element nums[i] as a potential candidate to be the minimum in the balanced subarray
+        for (int i = 0; i < n; i++) {
+            // maximum allowed value for a balanced array with min = nums[i]
+            long maxVal = (long) nums[i] * k; 
+
+            // find first index where nums[idx] > cand
+            int idx = upperBound(nums, maxVal); 
+
+            // remove all elements before i (i elements) and all elements after idx-1 (n-idx elements)
+            // so, total removals = i (before) + (n - idx) (after)
+            minRemovals = Math.min(minRemovals, i + n - idx);
+        }
+
+        return minRemovals;
+    }
+}
+
+// TC: O(nlogn)
+// SC: O(1)
